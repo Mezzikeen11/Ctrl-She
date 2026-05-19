@@ -316,11 +316,11 @@ textarea { min-height: 112px; resize: vertical; }
 .final-cta h2 { color: var(--color-primary-dark); font-size: clamp(2rem, 5vw, 3.4rem); margin: 0 0 8px; }
 .final-cta p { color: var(--color-muted); }
 
-.mock-map { position: relative; min-height: 520px; overflow: hidden; background: url("/MAPA.jpeg") center / cover no-repeat, linear-gradient(135deg, #fbf9ff, #efe8ff); }
+.mock-map { position: relative; aspect-ratio: 1200 / 1041; min-height: 0; overflow: hidden; padding: 0; background: url("/MAPA.jpeg") center / 100% 100% no-repeat, linear-gradient(135deg, #fbf9ff, #efe8ff); }
 .mock-map::before { content: ""; position: absolute; inset: 0; background: rgba(255,255,255,.08); pointer-events: none; }
 .map-pin { position: absolute; transform: translate(-50%, -50%); border: 0; min-width: 34px; min-height: 34px; border-radius: 50%; background: var(--color-primary); color: white; box-shadow: 0 10px 22px rgba(59,36,122,.22); cursor: pointer; }
 .map-pin::after { content: ""; position: absolute; inset: 9px; border-radius: 50%; background: var(--color-success); }
-.map-pin span { position: absolute; left: 22px; top: -8px; width: max-content; max-width: 140px; padding: 6px 9px; border-radius: 999px; background: white; color: var(--color-primary-dark); border: 1px solid var(--color-info); font-size: .8rem; font-weight: 850; }
+.map-pin span { position: absolute; left: 22px; top: -8px; width: max-content; max-width: 140px; padding: 6px 9px; border-radius: 999px; background: white; color: var(--color-primary-dark); border: 1px solid var(--color-info); font-size: .8rem; font-weight: 850; line-height: 1.05; }
 .map-pin.label-left span { left: auto; right: 22px; }
 .map-pin.active { background: var(--color-pink); transform: translate(-50%, -50%) scale(1.12); }
 .zone-panel { padding: 20px; }
@@ -333,7 +333,7 @@ textarea { min-height: 112px; resize: vertical; }
   .route-map { grid-template-columns: repeat(2, 1fr); }
   .order-summary { position: static; }
   .catalog-admin-item { grid-template-columns: 1fr; align-items: start; }
-  .mock-map { min-height: 430px; }
+  .mock-map { width: 100%; }
 }
 
 @media (max-width: 720px) {
@@ -365,8 +365,11 @@ textarea { min-height: 112px; resize: vertical; }
   .card, .padded, .login-card, .onboarding { border-radius: 18px; padding: 16px; }
   .seller-header { flex-direction: column; align-items: stretch; padding: 18px; }
   .seller-header .btn, .order-actions .btn, .qr-layout .btn { width: 100%; }
-  .mock-map { min-height: 360px; }
-  .map-pin span { transform: translateX(-30%); max-width: 110px; white-space: normal; }
+  .mock-map.card { padding: 0; border-radius: 18px; }
+  .map-pin { min-width: 24px; min-height: 24px; }
+  .map-pin::after { inset: 7px; }
+  .map-pin span { left: 16px; top: -7px; max-width: 76px; padding: 4px 6px; white-space: normal; font-size: .62rem; line-height: 1.05; }
+  .map-pin.label-left span { right: 16px; }
   .assistant-list { grid-template-columns: 1fr; }
   .demo-guide { right: 12px; bottom: 12px; }
   .demo-content { max-height: 58vh; }
