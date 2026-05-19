@@ -95,7 +95,7 @@ export default function App() {
           />
 
           <Route
-            path="/metricas"
+            path="/reportes"
             element={
               <ProtectedRoute roles={["admin"]}>
                 <AdminDashboard />
@@ -105,6 +105,24 @@ export default function App() {
 
           <Route
             path="/negocios"
+            element={
+              <ProtectedRoute roles={["admin"]}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/destacados"
+            element={
+              <ProtectedRoute roles={["admin"]}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/metricas"
             element={
               <ProtectedRoute roles={["admin"]}>
                 <AdminDashboard />

@@ -24,11 +24,13 @@ export default function Navbar() {
           ["IA comercial", "/ia"],
           ["QR", "/qr"]
         ]
-      : role === "admin"
+            : role === "admin"
         ? [
             ["Panel admin", "/admin"],
-            ["Explorar", "/explorar"],
-            ["Ruta local", "/ruta-local"]
+            ["Validaciones", "/validaciones"],
+            ["Reportes", "/reportes"],
+            ["Negocios", "/negocios"],
+            ["Destacados", "/destacados"]
           ]
         : [
             ["Inicio", "/"],
@@ -37,7 +39,10 @@ export default function Navbar() {
             ["Iniciar sesión", "/login"]
           ];
 
-  const brandTarget = role === "cliente" ? "/cliente" : "/";
+  const brandTarget =
+  role === "cliente" ? "/cliente" :
+  role === "admin" ? "/admin" :
+  "/";
 
   const handleLogout = () => {
     logout();
