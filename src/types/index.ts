@@ -1,11 +1,11 @@
 export type BusinessType = "producto" | "servicio" | "experiencia";
 export type ValidationStatus = "Verificada" | "Pendiente" | "Rechazada";
 export type Category =
-  | "Artesanias y souvenirs"
+  | "Artesanías y souvenirs"
   | "Moda y accesorios"
   | "Belleza y cuidado personal"
   | "Servicios creativos"
-  | "Experiencias turisticas";
+  | "Experiencias turísticas";
 
 export interface CatalogItem {
   id: string;
@@ -89,5 +89,5 @@ export interface InvoiceRequest {
   cfdiUse: string;
   email: string;
   amount: number;
-  status: "Pendiente" | "En revision" | "Enviada" | "Rechazada por datos incorrectos";
+  status: "Pendiente" | "En revisión" | "Enviada" | "Rechazada por datos incorrectos";
 }

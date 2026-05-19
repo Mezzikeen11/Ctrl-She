@@ -19,108 +19,247 @@ import { useAuth } from "../auth/AuthContext";
 export default function StoreProfilePage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [business, setBusiness] = useState(getBusinesses().find((item) => item.id === id));
+  const { isAuthenticated } = useAuth();
+
+  const reviewStorageKey = id ? `ctrl-she-reviewed-${id}` : "";
+
+  const [business, setBusiness] = useState(
+    getBusinesses().find((item) => item.id === id)
+  );
   const [imageFailed, setImageFailed] = useState(false);
   const [reviewText, setReviewText] = useState("");
+  const [reviewRating, setReviewRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [reviewError, setReviewError] = useState("");
   const [reviewConfirmed, setReviewConfirmed] = useState(false);
-  const { isAuthenticated } = useAuth();
-  if (!business) return <div className="page"><div className="empty">Tienda no encontrada.</div></div>;
+  const [hasReviewed, setHasReviewed] = useState(() =>
+    Boolean(reviewStorageKey && localStorage.getItem(reviewStorageKey))
+  );
 
-const selectItem = (item: CatalogItem) => {
-  if (!isAuthenticated) {
-    navigate("/login");
-    return;
+  if (!business) {
+    return (
+      <div className="page">
+        <div className="empty">Tienda no encontrada.</div>
+      </div>
+    );
   }
 
-  navigate(`/pedido?business=${business.id}&item=${item.id}`);
-};  
+  const selectItem = (item: CatalogItem) => {
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
+
+    navigate(`/pedido?business=${business.id}&item=${item.id}`);
+  };
+
+  const wa = `https://wa.me/52${business.phone}?text=${encodeURIComponent(
+    `Hola, vi tu negocio ${business.name} en Ctrl + She`
+  )}`;
+
+  const url = `${window.location.origin}/tienda/${business.id}`;
+
   const saveReview = () => {
-    if (!reviewText.trim()) return;
-    const review: Review = { id: crypto.randomUUID(), businessId: business.id, author: "Cliente demo", rating: 5, text: reviewText };
-    setBusiness(addReview(business.id, review));
+    setReviewError("");
+
+    if (hasReviewed) {
+      setReviewError("Ya registraste una reseña para esta tienda.");
+      return;
+    }
+
+    if (!reviewRating) {
+      setReviewError("Selecciona una calificación antes de publicar tu reseña.");
+      return;
+    }
+
+    if (!reviewText.trim()) {
+      setReviewError("Escribe una reseña breve antes de publicarla.");
+      return;
+    }
+
+    const review: Review = {
+      id: crypto.randomUUID(),
+      businessId: business.id,
+      author: "Cliente demo",
+      rating: reviewRating,
+      text: reviewText.trim()
+    };
+
+    const updatedBusiness = addReview(business.id, review);
+
+    if (updatedBusiness) {
+      setBusiness(updatedBusiness);
+    }
+
+    if (reviewStorageKey) {
+      localStorage.setItem(reviewStorageKey, "true");
+    }
+
+    setHasReviewed(true);
     setReviewText("");
+    setReviewRating(0);
+    setHoverRating(0);
     setReviewConfirmed(true);
   };
-const wa = `https://wa.me/52${business.phone}?text=${encodeURIComponent(
-  `Hola, vi tu negocio ${business.name} en Ctrl + She`
-)}`;
 
   return (
     <div className="page">
       <section className="store-hero">
-        {!imageFailed ? <img src={business.image} alt={business.name} onError={() => setImageFailed(true)} /> : <div className="store-image-fallback">{business.name.charAt(0)}</div>}
+        {!imageFailed ? (
+          <img
+            src={business.image}
+            alt={business.name}
+            onError={() => setImageFailed(true)}
+          />
+        ) : (
+          <div className="store-image-fallback">
+            {business.name.charAt(0)}
+          </div>
+        )}
+
         <div>
           <span className="badge pink">{business.category}</span>
           <h1>{business.name}</h1>
-          <p>{business.owner} · {business.zone}</p>
+          <p>
+            {business.owner} · {business.zone}
+          </p>
           <p>{business.description}</p>
-          <div className="row"><span className="rating"><Star size={16} fill="currentColor" /> {business.rating}</span><span className="badge success">{business.status}</span></div>
+
+          <div className="row">
+            <span className="rating">
+              <Star size={16} fill="currentColor" /> {business.rating}
+            </span>
+            <span className="badge success">{business.status}</span>
+          </div>
         </div>
       </section>
 
       <div className="action-strip">
-        <a className="btn whatsapp" href={wa} target="_blank" rel="noreferrer"><MessageCircle size={18} /> Contactar por WhatsApp</a>
-        <Link className="btn outline" to="/ruta-local"><MapPin size={18} /> Ver ubicacion</Link>
+        <a
+          className="btn whatsapp"
+          href={wa}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <MessageCircle size={18} /> Contactar por WhatsApp
+        </a>
+
+        <Link className="btn outline" to="/ruta-local">
+          <MapPin size={18} /> Ver ubicación
+        </Link>
+
         <button
-  className="btn secondary"
-  onClick={() =>
-    document
-      .getElementById("catalogo")
-      ?.scrollIntoView()
-  }
->
-  {business.type === "experiencia" ? (
-    <>
-      <CalendarDays size={18} />
-      Reservar
-    </>
-  ) : (
-    <>
-      <ShoppingBag size={18} />
-      Hacer pedido
-    </>
-  )}
-</button>
-        <button
-  className="btn secondary"
-  onClick={() => {
-    navigator.clipboard.writeText(window.location.href);
-    alert("Enlace de la tienda copiado");
-  }}
->
-  <Share2 size={18} />
-  Compartir
-</button>
-{isAuthenticated && (
-  <button
-    className="btn primary"
-    onClick={() => alert("Primero confirma un pedido para generar folio y solicitud.")}
-  >
-    <ReceiptText size={18} /> Solicitar comprobante/factura
-  </button>
-)}      </div>
+          className="btn secondary"
+          onClick={() => document.getElementById("catalogo")?.scrollIntoView()}
+        >
+          {business.type === "experiencia" ? "Reservar" : "Hacer pedido"}
+        </button>
+
+        {isAuthenticated && (
+          <button
+            className="btn primary"
+            onClick={() =>
+              alert("Primero confirma un pedido para generar folio y comprobante.")
+            }
+          >
+            <ReceiptText size={18} /> Solicitar comprobante
+          </button>
+        )}
+      </div>
+
+      <section className="section store-layout">
+        <div>
+          <h2 id="catalogo">Catálogo</h2>
+
+          <div className="catalog-grid">
+            {business.items.map((item) => (
+              <ProductCard
+                key={item.id}
+                item={item}
+                onSelect={selectItem}
+              />
+            ))}
+          </div>
+        </div>
+
+        <QRBlock url={url} />
+      </section>
 
       <section className="section">
-  <h2 id="catalogo">Catálogo</h2>
+        <h2>Reseñas</h2>
 
-  <div className="catalog-grid">
-    {business.items.map((item) => (
-      <ProductCard
-        key={item.id}
-        item={item}
-        onSelect={selectItem}
-      />
-    ))}
-  </div>
-</section>
+        {reviewConfirmed && (
+          <ConfirmationPanel
+            title="Reseña publicada"
+            message="Gracias, tu reseña quedó registrada en esta tienda."
+            detailTo={`/tienda/${business.id}`}
+            onBack={() => setReviewConfirmed(false)}
+          />
+        )}
 
-      <section className="section">
-        <h2>Resenas</h2>
-        {reviewConfirmed && <ConfirmationPanel title="Resena publicada" message="Gracias, tu resena quedo registrada en esta tienda." detailTo={`/tienda/${business.id}`} onBack={() => setReviewConfirmed(false)} />}
-        <div className="reviews-grid">{business.reviews.map((review) => <ReviewCard key={review.id} review={review} />)}</div>
+        <div className="reviews-grid">
+          {business.reviews.map((review) => (
+            <ReviewCard key={review.id} review={review} />
+          ))}
+        </div>
+
         <div className="review-form card">
-          <textarea placeholder="Deja una resena para esta tienda" value={reviewText} onChange={(e) => setReviewText(e.target.value)} />
-          <button className="btn primary" onClick={saveReview}>Dejar resena</button>
+          <div>
+            <span className="eyebrow">Tu opinión</span>
+            <h3>Comparte tu experiencia</h3>
+            <p>Solo puedes registrar una reseña por tienda desde este navegador.</p>
+          </div>
+
+          {hasReviewed ? (
+            <div className="alert success">
+              Ya registraste una reseña para esta tienda.
+            </div>
+          ) : (
+            <>
+              <label className="review-label">Tu calificación</label>
+
+                <div className="star-picker">
+                  {[1, 2, 3, 4, 5].map((value) => (
+                    <button
+                      type="button"
+                      key={value}
+                      className={
+                        value <= (hoverRating || reviewRating)
+                          ? "star-button active"
+                          : "star-button"
+                      }
+                      onClick={() => setReviewRating(value)}
+                      onMouseEnter={() => setHoverRating(value)}
+                      onMouseLeave={() => setHoverRating(0)}
+                      aria-label={`Seleccionar ${value} ${value === 1 ? "estrella" : "estrellas"}`}
+                      title={`${value} ${value === 1 ? "estrella" : "estrellas"}`}
+                    >
+                      <Star size={25} fill="currentColor" />
+                    </button>
+                  ))}
+                </div>
+
+              <textarea
+                placeholder="Escribe tu reseña para esta tienda"
+                value={reviewText}
+                onChange={(event) => setReviewText(event.target.value)}
+              />
+
+              {reviewError && (
+                <div className="alert pending" role="alert">
+                  {reviewError}
+                </div>
+              )}
+
+              <button
+                className="btn primary"
+                onClick={saveReview}
+                disabled={!reviewText.trim() || reviewRating === 0}
+              >
+                Publicar reseña
+              </button>
+            </>
+          )}
         </div>
       </section>
     </div>
