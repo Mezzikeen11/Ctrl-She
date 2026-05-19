@@ -33,12 +33,8 @@ export default function ClientHomePage() {
           </div>
         </div>
 
-        <aside className="client-home-summary">
-          <span className="badge success">Sesión activa</span>
-          <h2>Accesos rápidos</h2>
-          <p>
-            Continúa comprando, revisa tus pedidos o encuentra negocios cerca de tu ruta.
-          </p>
+        <aside className="hero-logo-panel client-home-summary" aria-label="Logo Ctrl + She">
+          <img src="/logo.png" alt="Ctrl + She" />
         </aside>
       </section>
 

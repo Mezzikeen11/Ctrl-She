@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Edit3, Eye, PackagePlus } from "lucide-react";
+import { Edit3, PackagePlus } from "lucide-react";
 import ControlAssistant from "../components/ControlAssistant";
 import QRBlock from "../components/QRBlock";
 import ReviewCard from "../components/ReviewCard";
@@ -103,11 +103,17 @@ export default function EntrepreneurDashboard() {
     <div className="page dashboard">
       <section className="seller-header card">
         <div>
-          <span className={business.status === "Verificada" ? "badge success" : "badge pending"}>{business.status}</span>
+          <span className="eyebrow">Inicio de vendedora</span>
           <h1>{business.name}</h1>
           <p>{business.owner} · {business.category} · {business.zone}</p>
+          <p>Administra tu tienda, actualiza productos y servicios, revisa pedidos y comparte tu QR desde un solo lugar.</p>
+          <div className="row">
+            <span className={business.status === "Verificada" ? "badge success" : "badge pending"}>{business.status}</span>
+          </div>
         </div>
-        <Link className="btn primary" to={`/tienda/${business.id}`}><Eye size={18} /> Ver como cliente</Link>
+        <div className="hero-logo-panel seller-logo-panel" aria-label="Logo Ctrl + She">
+          <img src="/logo.png" alt="Ctrl + She" />
+        </div>
       </section>
 
       <ControlAssistant />
