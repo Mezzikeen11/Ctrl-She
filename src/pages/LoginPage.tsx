@@ -25,7 +25,7 @@ export default function LoginPage() {
       return;
     }
 
-    const user = login(email, password);
+    const user = login(email, password, selectedRole);
     navigate(redirectByRole[user.role]);
   };
 
@@ -45,15 +45,13 @@ export default function LoginPage() {
         <form className="form" onSubmit={submit}>
           <label htmlFor="email">Correo<input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="correo@ctrlshe.com" /></label>
           <label htmlFor="password">Contrasena<input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Ctrl+She" /></label>
-          {mode === "register" && (
-            <fieldset className="role-field">
-              <legend>¿Que tipo de cuenta quieres crear?</legend>
-              <div className="role-choice">
-                <button type="button" className={selectedRole === "emprendedora" ? "chip active" : "chip"} onClick={() => setSelectedRole("emprendedora")}>Soy vendedora</button>
-                <button type="button" className={selectedRole === "cliente" ? "chip active" : "chip"} onClick={() => setSelectedRole("cliente")}>Soy cliente</button>
-              </div>
-            </fieldset>
-          )}
+          <fieldset className="role-field">
+            <legend>{mode === "login" ? "¿Como quieres entrar?" : "¿Que tipo de cuenta quieres crear?"}</legend>
+            <div className="role-choice">
+              <button type="button" className={selectedRole === "emprendedora" ? "chip active" : "chip"} onClick={() => setSelectedRole("emprendedora")}>Soy vendedora</button>
+              <button type="button" className={selectedRole === "cliente" ? "chip active" : "chip"} onClick={() => setSelectedRole("cliente")}>Soy cliente</button>
+            </div>
+          </fieldset>
           <button className="btn primary full">{mode === "login" ? "Iniciar sesion" : "Registrarme"}</button>
           <Link className="btn outline full" to="/explorar">Explorar como visitante</Link>
         </form>

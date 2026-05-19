@@ -224,9 +224,11 @@ textarea { min-height: 112px; resize: vertical; }
 .compact-list div, .table-list div { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: var(--color-bg); }
 .compact-list span, .table-list small { color: var(--color-muted); }
 .table-list { display: grid; gap: 10px; }
-.table-list div { grid-template-columns: 1fr auto auto auto; }
+.table-list div { display: grid; grid-template-columns: minmax(240px, 1fr) 120px 88px 88px; }
+.table-list .badge, .table-list .btn { justify-self: center; width: 100%; }
+.admin-row-spacer { grid-column: span 2; }
 .table-list span:first-child { display: grid; gap: 4px; }
-.admin-page .page-header { padding: 26px; border-radius: 24px; background: white; border-left: 8px solid var(--color-primary); }
+.admin-page .page-header { padding: 26px; border-radius: 24px; background: white; }
 
 .route-map { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding: 22px; margin-bottom: 22px; background: linear-gradient(135deg, #ffffff, rgba(192,224,255,.55)); }
 .route-map span { min-height: 82px; display: grid; place-items: center; text-align: center; border-radius: 18px; background: white; color: var(--color-primary); font-weight: 850; border: 1px solid var(--color-info); }

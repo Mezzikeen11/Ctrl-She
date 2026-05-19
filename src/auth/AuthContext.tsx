@@ -19,7 +19,7 @@ interface AuthContextValue {
   currentUser: DemoUser | null;
   isAuthenticated: boolean;
   role: UserRole | null;
-  login: (email: string, password: string) => DemoUser;
+  login: (email: string, password: string, role?: Exclude<UserRole, "admin">) => DemoUser;
   register: (email: string, password: string, role: Exclude<UserRole, "admin">) => DemoUser;
   logout: () => void;
 }
@@ -68,7 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     currentUser,
     isAuthenticated: Boolean(currentUser),
     role: currentUser?.role || null,
-    login(email, password) {
+    login(email, password, role = "cliente") {
       if (normalizeEmail(email) === normalizeEmail(adminEmail) && password === adminPassword) {
         return startSession({ email: adminEmail, name: "Admin Ctrl + She", role: "admin" }, setCurrentUser);
       }
@@ -79,7 +79,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const demoUser = demoUsers.find((user) => normalizeEmail(user.email) === normalizeEmail(email));
       if (demoUser) return startSession({ email: demoUser.email, name: demoUser.name, role: demoUser.role }, setCurrentUser);
 
-      return startSession({ email: fallbackEmail(email), name: "Cliente Ctrl + She", role: "cliente" }, setCurrentUser);
+      return startSession({
+        email: fallbackEmail(email),
+        name: role === "emprendedora" ? "Vendedora Ctrl + She" : "Cliente Ctrl + She",
+        role
+      }, setCurrentUser);
     },
     register(email, _password, role) {
       const user = {
