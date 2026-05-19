@@ -8,7 +8,7 @@ export default function LandingPage() {
         <div className="hero-copy">
           <span className="eyebrow">Plataforma para emprendedoras de Cancun</span>
           <h1>Ctrl + She</h1>
-          <h2>Controla, conecta y <mark>crece</mark></h2>
+          <h2 className="hero-tagline">Controla, conecta y <mark>crece</mark></h2>
           <p>Organiza ventas, reservas, clientes, catalogos y comprobantes desde un solo lugar.</p>
           <p>Una plataforma digital para que mujeres emprendedoras compartan su tienda, reciban pedidos, usen IA comercial y recuperen control sobre su tiempo.</p>
           <div className="cta-row">
@@ -16,14 +16,8 @@ export default function LandingPage() {
             <Link className="btn secondary" to="/login">Iniciar sesion</Link>
           </div>
         </div>
-        <div className="hero-panel card">
-          <div className="mini-top"><span>Tienda activa</span><b>18 visitas por QR</b></div>
-          <div className="phone-preview">
-            <span className="badge success">Verificada</span>
-            <h3>Artesanias Lupita</h3>
-            <p>Pulsera Caribe Maya · $120 MXN</p>
-            <button>Confirmar pedido</button>
-          </div>
+        <div className="hero-logo-panel" aria-label="Logo Ctrl + She">
+          <img src="/logo.png" alt="Ctrl + She" />
         </div>
       </section>
 

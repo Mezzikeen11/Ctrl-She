@@ -75,13 +75,13 @@ main { min-height: calc(100vh - 142px); }
   padding: 42px;
   border-radius: 32px;
   background:
-    radial-gradient(circle at 85% 16%, rgba(255,178,247,.42), transparent 28%),
     radial-gradient(circle at 15% 85%, rgba(171,157,255,.32), transparent 30%),
     linear-gradient(135deg, #ffffff, #f8f5ff 70%);
   overflow: hidden;
 }
 .hero h1 { margin: 12px 0 0; font-size: clamp(3rem, 9vw, 7rem); line-height: .9; letter-spacing: 0; }
 .hero h2 { margin: 8px 0 18px; color: var(--color-primary-dark); font-size: clamp(1.8rem, 5vw, 3.6rem); line-height: 1; }
+.hero-tagline { white-space: nowrap; font-size: clamp(1.8rem, 4.2vw, 3.2rem) !important; }
 mark { padding: 0 .28em; border-radius: 14px; background: var(--color-success); color: var(--color-primary); }
 .hero p { max-width: 680px; color: var(--color-muted); font-size: 1.13rem; line-height: 1.7; }
 .cta-row, .row, .filter-row, .action-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
@@ -117,20 +117,8 @@ mark { padding: 0 .28em; border-radius: 14px; background: var(--color-success); 
   box-shadow: var(--shadow-soft);
 }
 .padded, .access-card { padding: 24px; }
-.hero-panel { padding: 20px; }
-.mini-top { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 18px; color: var(--color-primary); }
-.phone-preview {
-  min-height: 390px;
-  padding: 28px;
-  border-radius: 28px;
-  background: linear-gradient(160deg, var(--color-primary-dark), var(--color-primary), var(--color-pink));
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-}
-.phone-preview button { width: 100%; border: 0; border-radius: 999px; padding: 14px; background: var(--color-success); color: var(--color-primary); font-weight: 900; }
-
+.hero-logo-panel { display: grid; place-items: center; min-height: 440px; }
+.hero-logo-panel img { width: min(100%, 420px); height: auto; object-fit: contain; filter: drop-shadow(0 18px 35px rgba(59,36,122,.12)); }
 .section { margin-top: 56px; }
 .two-col, .dashboard-layout, .store-layout, .order-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
 .two-col article, .benefits article, .steps article { padding: 26px; background: white; border-radius: var(--radius-card); border: 1px solid var(--color-info); }
@@ -364,8 +352,8 @@ textarea { min-height: 112px; resize: vertical; }
   .page { width: min(100% - 24px, 1180px); padding-top: 22px; }
   .hero h1 { font-size: 3.3rem; }
   .hero h2 { font-size: 2rem; }
+  .hero-tagline { white-space: normal; }
   .hero { padding: 22px; border-radius: 24px; }
-  .hero-panel { display: none; }
   .cta-row .btn, .action-strip .btn { width: 100%; }
   .steps, .ai-results, .form-grid { grid-template-columns: 1fr; }
   .filter-row { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 8px; }
