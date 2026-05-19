@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { CalendarDays, PackageSearch, Sparkles, TrendingUp } from "lucide-react";
+import { CalendarDays, Image, PackageSearch, Sparkles, Sun, TrendingUp } from "lucide-react";
 
 const alerts = [
   {
@@ -23,10 +23,10 @@ const alerts = [
 ];
 
 const predictions = [
-  { title: "Se acerca temporada alta", detail: "Prepara mas stock de piezas pequenas y listas para entrega rapida.", value: 86 },
-  { title: "Aumentara la demanda en Zona Hotelera", detail: "Publica disponibilidad y entregas en puntos faciles para turistas.", value: 72 },
-  { title: "Los accesorios con tonos Caribe estan subiendo", detail: "Crea un paquete de pulsera + bolsa con precio especial.", value: 64 },
-  { title: "Clientes responden mejor a fotos claras", detail: "Actualiza imagenes de los productos mas consultados esta semana.", value: 58 }
+  { title: "Se acerca temporada alta", detail: "Prepara mas stock de piezas pequenas y listas para entrega rapida.", icon: <Sun size={18} /> },
+  { title: "Aumentara la demanda en Zona Hotelera", detail: "Publica disponibilidad y entregas en puntos faciles para turistas.", icon: <TrendingUp size={18} /> },
+  { title: "Los accesorios con tonos Caribe estan subiendo", detail: "Crea un paquete de pulsera + bolsa con precio especial.", icon: <PackageSearch size={18} /> },
+  { title: "Clientes responden mejor a fotos claras", detail: "Actualiza imagenes de los productos mas consultados esta semana.", icon: <Image size={18} /> }
 ];
 
 export default function ControlAssistant() {
@@ -47,20 +47,15 @@ export default function ControlAssistant() {
 
       <div className="prediction-panel">
         <div>
-          <span className="eyebrow">Predicciones IA</span>
-          <h3>Avisos para preparar tu semana</h3>
+          <h2>Predicciones IA</h2>
         </div>
 
         <div className="prediction-grid">
           {predictions.map((prediction) => (
             <article className="prediction-card" key={prediction.title}>
-              <div>
-                <b>{prediction.title}</b>
-                <p>{prediction.detail}</p>
-              </div>
-              <div className="mini-chart" aria-label={`${prediction.value}% de prioridad`}>
-                <span style={{ width: `${prediction.value}%` }} />
-              </div>
+              <span>{prediction.icon}</span>
+              <b>{prediction.title}</b>
+              <p>{prediction.detail}</p>
             </article>
           ))}
         </div>
