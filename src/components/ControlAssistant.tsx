@@ -15,9 +15,9 @@ const alerts = [
     icon: <CalendarDays size={18} />
   },
   {
-    title: "Tu producto mas consultado es Pulsera Caribe Maya.",
-    detail: "Sube stock, mejora la foto o prepara una promocion corta.",
-    to: "/emprendedora#agregar-catalogo",
+    title: "Tu producto más consultado es Pulsera Caribe Maya.",
+    detail: "Sube stock, mejora la foto o prepara una promoción corta.",
+    to: "/catalogo",
     icon: <TrendingUp size={18} />
   }
 ];
