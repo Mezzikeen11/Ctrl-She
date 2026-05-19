@@ -146,7 +146,7 @@ export default function App() {
       </main>
 
       <footer className="footer">
-        Ctrl + She · Controla, conecta y crece · Prototipo frontend sin backend ni pagos reales.
+        Ctrl + She · Controla, conecta y crece.
       </footer>
     </>
   );
