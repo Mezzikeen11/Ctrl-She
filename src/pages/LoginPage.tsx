@@ -57,10 +57,6 @@ export default function LoginPage() {
           <button className="btn primary full">{mode === "login" ? "Iniciar sesion" : "Registrarme"}</button>
           <Link className="btn outline full" to="/explorar">Explorar como visitante</Link>
         </form>
-        <aside className="credentials-box">
-          <b>Admin</b>
-          <p>adminCtrlShe@gmail.com / Ctrl+She</p>
-        </aside>
       </section>
     </div>
   );
