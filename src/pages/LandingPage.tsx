@@ -12,7 +12,7 @@ export default function LandingPage() {
           <p>Organiza ventas, reservas, clientes, catalogos y comprobantes desde un solo lugar.</p>
           <p>Una plataforma digital para que mujeres emprendedoras compartan su tienda, reciban pedidos, usen IA comercial y recuperen control sobre su tiempo.</p>
           <div className="cta-row">
-            <Link className="btn primary" to="/explorar">Explorar como visitante</Link>
+            <Link className="btn primary" to="/explorar">Explorar negocios</Link>
             <Link className="btn secondary" to="/login">Iniciar sesion</Link>
           </div>
         </div>

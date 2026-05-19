@@ -1,8 +1,15 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { MessageCircle, MapPin, ReceiptText, Star } from "lucide-react";
+import {
+  MessageCircle,
+  MapPin,
+  ReceiptText,
+  Share2,
+  ShoppingBag,
+  CalendarDays,
+  Star,
+} from "lucide-react";
 import { useState } from "react";
 import ProductCard from "../components/ProductCard";
-import QRBlock from "../components/QRBlock";
 import ReviewCard from "../components/ReviewCard";
 import ConfirmationPanel from "../components/ConfirmationPanel";
 import { addReview, getBusinesses } from "../lib/storage";
@@ -27,7 +34,6 @@ const selectItem = (item: CatalogItem) => {
 
   navigate(`/pedido?business=${business.id}&item=${item.id}`);
 };  
-const url = `${window.location.origin}/tienda/${business.id}`;
   const saveReview = () => {
     if (!reviewText.trim()) return;
     const review: Review = { id: crypto.randomUUID(), businessId: business.id, author: "Cliente demo", rating: 5, text: reviewText };
@@ -55,7 +61,36 @@ const wa = `https://wa.me/52${business.phone}?text=${encodeURIComponent(
       <div className="action-strip">
         <a className="btn whatsapp" href={wa} target="_blank" rel="noreferrer"><MessageCircle size={18} /> Contactar por WhatsApp</a>
         <Link className="btn outline" to="/ruta-local"><MapPin size={18} /> Ver ubicacion</Link>
-        <button className="btn secondary" onClick={() => document.getElementById("catalogo")?.scrollIntoView()}>{business.type === "experiencia" ? "Reservar" : "Hacer pedido"}</button>
+        <button
+  className="btn secondary"
+  onClick={() =>
+    document
+      .getElementById("catalogo")
+      ?.scrollIntoView()
+  }
+>
+  {business.type === "experiencia" ? (
+    <>
+      <CalendarDays size={18} />
+      Reservar
+    </>
+  ) : (
+    <>
+      <ShoppingBag size={18} />
+      Hacer pedido
+    </>
+  )}
+</button>
+        <button
+  className="btn secondary"
+  onClick={() => {
+    navigator.clipboard.writeText(window.location.href);
+    alert("Enlace de la tienda copiado");
+  }}
+>
+  <Share2 size={18} />
+  Compartir
+</button>
 {isAuthenticated && (
   <button
     className="btn primary"
@@ -65,15 +100,19 @@ const wa = `https://wa.me/52${business.phone}?text=${encodeURIComponent(
   </button>
 )}      </div>
 
-      <section className="section store-layout">
-        <div>
-          <h2 id="catalogo">Catalogo</h2>
-          <div className="catalog-grid">
-            {business.items.map((item) => <ProductCard key={item.id} item={item} onSelect={selectItem} />)}
-          </div>
-        </div>
-        <QRBlock url={url} />
-      </section>
+      <section className="section">
+  <h2 id="catalogo">Catálogo</h2>
+
+  <div className="catalog-grid">
+    {business.items.map((item) => (
+      <ProductCard
+        key={item.id}
+        item={item}
+        onSelect={selectItem}
+      />
+    ))}
+  </div>
+</section>
 
       <section className="section">
         <h2>Resenas</h2>
