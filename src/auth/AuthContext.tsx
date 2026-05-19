@@ -19,12 +19,44 @@ interface AuthContextValue {
   currentUser: DemoUser | null;
   isAuthenticated: boolean;
   role: UserRole | null;
-  login: (email: string, password: string) => DemoUser | null;
+  login: (email: string, password: string) => DemoUser;
+  register: (email: string, password: string, role: Exclude<UserRole, "admin">) => DemoUser;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 const sessionKey = "ctrl-she-session";
+const usersKey = "ctrl-she-users";
+const adminEmail = "adminCtrlShe@gmail.com";
+const adminPassword = "Ctrl+She";
+
+function normalizeEmail(email: string) {
+  return email.trim().toLowerCase();
+}
+
+function fallbackEmail(email: string) {
+  return email.trim() || `invitada-${Date.now()}@ctrlshe.local`;
+}
+
+function getSavedUsers() {
+  const saved = localStorage.getItem(usersKey);
+  return saved ? JSON.parse(saved) as DemoUser[] : [];
+}
+
+function saveUser(user: DemoUser) {
+  const users = getSavedUsers();
+  const nextUsers = [
+    ...users.filter((savedUser) => normalizeEmail(savedUser.email) !== normalizeEmail(user.email)),
+    user
+  ];
+  localStorage.setItem(usersKey, JSON.stringify(nextUsers));
+}
+
+function startSession(user: DemoUser, setCurrentUser: (user: DemoUser) => void) {
+  localStorage.setItem(sessionKey, JSON.stringify(user));
+  setCurrentUser(user);
+  return user;
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<DemoUser | null>(() => {
@@ -37,12 +69,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isAuthenticated: Boolean(currentUser),
     role: currentUser?.role || null,
     login(email, password) {
-      const found = demoUsers.find((user) => user.email.toLowerCase() === email.toLowerCase().trim() && user.password === password);
-      if (!found) return null;
-      const user = { email: found.email, name: found.name, role: found.role };
-      localStorage.setItem(sessionKey, JSON.stringify(user));
-      setCurrentUser(user);
-      return user;
+      if (normalizeEmail(email) === normalizeEmail(adminEmail) && password === adminPassword) {
+        return startSession({ email: adminEmail, name: "Admin Ctrl + She", role: "admin" }, setCurrentUser);
+      }
+
+      const savedUser = getSavedUsers().find((user) => normalizeEmail(user.email) === normalizeEmail(email));
+      if (savedUser) return startSession(savedUser, setCurrentUser);
+
+      const demoUser = demoUsers.find((user) => normalizeEmail(user.email) === normalizeEmail(email));
+      if (demoUser) return startSession({ email: demoUser.email, name: demoUser.name, role: demoUser.role }, setCurrentUser);
+
+      return startSession({ email: fallbackEmail(email), name: "Cliente Ctrl + She", role: "cliente" }, setCurrentUser);
+    },
+    register(email, _password, role) {
+      const user = {
+        email: fallbackEmail(email),
+        name: role === "emprendedora" ? "Vendedora Ctrl + She" : "Cliente Ctrl + She",
+        role
+      };
+      saveUser(user);
+      return startSession(user, setCurrentUser);
     },
     logout() {
       localStorage.removeItem(sessionKey);

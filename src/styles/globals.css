@@ -249,6 +249,10 @@ textarea { min-height: 112px; resize: vertical; }
 .login-brand { text-align: center; display: grid; justify-items: center; gap: 8px; margin-bottom: 10px; }
 .login-brand h1 { margin: 0; color: var(--color-primary); font-size: clamp(2.4rem, 8vw, 4.5rem); line-height: 1; }
 .login-brand p { margin: 0; color: var(--color-muted); font-weight: 800; }
+.auth-tabs, .role-choice { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.auth-tabs { padding: 0 22px; }
+.role-field { display: grid; gap: 10px; margin: 0; padding: 14px; border: 1px solid var(--color-info); border-radius: 16px; }
+.role-field legend { margin: 0 auto; padding: 0 10px; color: var(--color-primary); font-weight: 850; text-align: center; }
 .credentials-box { margin-top: 14px; padding: 14px; border-radius: 16px; background: var(--color-bg); border: 1px solid var(--color-info); color: var(--color-primary); }
 .credentials-box p { margin: 6px 0 0; color: var(--color-muted); overflow-wrap: anywhere; }
 
@@ -363,6 +367,8 @@ textarea { min-height: 112px; resize: vertical; }
   .store-hero img { height: 220px; }
   .table-list div { grid-template-columns: 1fr; align-items: start; }
   .card, .padded, .login-card, .onboarding { border-radius: 18px; padding: 16px; }
+  .auth-tabs { padding: 0; }
+  .auth-tabs, .role-choice { grid-template-columns: 1fr; }
   .seller-header { flex-direction: column; align-items: stretch; padding: 18px; }
   .seller-header .btn, .order-actions .btn, .qr-layout .btn { width: 100%; }
   .mock-map.card { padding: 0; border-radius: 18px; }

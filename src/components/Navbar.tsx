@@ -13,7 +13,7 @@ export default function Navbar() {
       ? [["Mi tienda", "/emprendedora"], ["Pedidos", "/pedidos"], ["IA comercial", "/ia"], ["QR", "/qr"]]
       : role === "admin"
         ? [["Panel admin", "/admin"], ["Explorar", "/explorar"], ["Ruta local", "/ruta-local"]]
-        : [["Inicio", "/"], ["Explorar", "/explorar"], ["Ruta local", "/ruta-local"], ["Iniciar sesion", "/login"]];
+        : [["Inicio", "/"], ["Explorar", "/explorar"], ["Ruta local", "/ruta-local"], ["Iniciar sesion/Registrarte", "/login"]];
   return (
     <header className="navbar">
       <Link className="brand" to="/">
