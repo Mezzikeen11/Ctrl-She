@@ -316,12 +316,12 @@ textarea { min-height: 112px; resize: vertical; }
 .final-cta h2 { color: var(--color-primary-dark); font-size: clamp(2rem, 5vw, 3.4rem); margin: 0 0 8px; }
 .final-cta p { color: var(--color-muted); }
 
-.mock-map { position: relative; min-height: 520px; overflow: hidden; background: linear-gradient(135deg, #fbf9ff, #efe8ff); }
-.mock-map::before { content: ""; position: absolute; inset: 12% 18% 18% 10%; border: 2px dashed rgba(124,58,237,.25); border-radius: 48% 52% 46% 54%; }
-.map-coast { position: absolute; right: -10%; top: -8%; width: 40%; height: 120%; background: linear-gradient(180deg, rgba(171,157,255,.32), rgba(255,178,247,.18)); border-radius: 999px 0 0 999px; }
+.mock-map { position: relative; min-height: 520px; overflow: hidden; background: url("/MAPA.jpeg") center / cover no-repeat, linear-gradient(135deg, #fbf9ff, #efe8ff); }
+.mock-map::before { content: ""; position: absolute; inset: 0; background: rgba(255,255,255,.08); pointer-events: none; }
 .map-pin { position: absolute; transform: translate(-50%, -50%); border: 0; min-width: 34px; min-height: 34px; border-radius: 50%; background: var(--color-primary); color: white; box-shadow: 0 10px 22px rgba(59,36,122,.22); cursor: pointer; }
 .map-pin::after { content: ""; position: absolute; inset: 9px; border-radius: 50%; background: var(--color-success); }
 .map-pin span { position: absolute; left: 22px; top: -8px; width: max-content; max-width: 140px; padding: 6px 9px; border-radius: 999px; background: white; color: var(--color-primary-dark); border: 1px solid var(--color-info); font-size: .8rem; font-weight: 850; }
+.map-pin.label-left span { left: auto; right: 22px; }
 .map-pin.active { background: var(--color-pink); transform: translate(-50%, -50%) scale(1.12); }
 .zone-panel { padding: 20px; }
 .zone-panel h2 { color: var(--color-primary-dark); }
