@@ -27,8 +27,9 @@ export default function ProductCard({ item, onSelect }: { item: CatalogItem; onS
           {item.language && <span>{item.language}</span>}
           {item.meetingPoint && <span>{item.meetingPoint}</span>}
         </div>
-        <button className="btn primary full" onClick={() => onSelect(item)}>{action}</button>
-      </div>
+<button className="btn primary full" onClick={() => onSelect(item)}>
+  {action}
+</button>      </div>
     </article>
   );
 }

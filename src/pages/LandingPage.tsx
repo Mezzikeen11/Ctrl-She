@@ -63,8 +63,7 @@ export default function LandingPage() {
       </section>
 
       <section className="section benefits">
-        <h2>Beneficios para la demo</h2>
-        <div className="feature-grid">
+<h2>Beneficios para clientes y emprendedoras</h2>        <div className="feature-grid">
           <article><QrCode /><b>Menos tareas manuales</b><p>Pedidos y reservas quedan registrados.</p></article>
           <article><Sparkles /><b>IA util, no generica</b><p>Textos, precio sugerido, ingles y preguntas frecuentes.</p></article>
           <article><BadgeCheck /><b>Confianza visible</b><p>Perfiles verificables, resenas y comprobantes claros.</p></article>

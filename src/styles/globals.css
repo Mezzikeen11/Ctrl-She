@@ -384,3 +384,14 @@ textarea { min-height: 112px; resize: vertical; }
   .demo-guide { right: 12px; bottom: 12px; }
   .demo-content { max-height: 58vh; }
 }
+
+@media (min-width: 721px) {
+  .mobile-only {
+    display: none !important;
+  }
+
+  .nav-links {
+    display: flex !important;
+    position: static !important;
+  }
+}

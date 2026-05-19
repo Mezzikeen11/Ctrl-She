@@ -7,6 +7,7 @@ import ReviewCard from "../components/ReviewCard";
 import ConfirmationPanel from "../components/ConfirmationPanel";
 import { addReview, getBusinesses } from "../lib/storage";
 import type { CatalogItem, Review } from "../types";
+import { useAuth } from "../auth/AuthContext";
 
 export default function StoreProfilePage() {
   const { id } = useParams();
@@ -15,11 +16,18 @@ export default function StoreProfilePage() {
   const [imageFailed, setImageFailed] = useState(false);
   const [reviewText, setReviewText] = useState("");
   const [reviewConfirmed, setReviewConfirmed] = useState(false);
+  const { isAuthenticated } = useAuth();
   if (!business) return <div className="page"><div className="empty">Tienda no encontrada.</div></div>;
 
-  const selectItem = (item: CatalogItem) => navigate(`/pedido?business=${business.id}&item=${item.id}`);
-  const wa = `https://wa.me/52${business.phone}?text=Hola,%20vi%20tu%20negocio%20en%20Ctrl%20%2B%20She`;
-  const url = `${window.location.origin}/tienda/${business.id}`;
+const selectItem = (item: CatalogItem) => {
+  if (!isAuthenticated) {
+    navigate("/login");
+    return;
+  }
+
+  navigate(`/pedido?business=${business.id}&item=${item.id}`);
+};  
+const url = `${window.location.origin}/tienda/${business.id}`;
   const saveReview = () => {
     if (!reviewText.trim()) return;
     const review: Review = { id: crypto.randomUUID(), businessId: business.id, author: "Cliente demo", rating: 5, text: reviewText };
@@ -27,6 +35,9 @@ export default function StoreProfilePage() {
     setReviewText("");
     setReviewConfirmed(true);
   };
+const wa = `https://wa.me/52${business.phone}?text=${encodeURIComponent(
+  `Hola, vi tu negocio ${business.name} en Ctrl + She`
+)}`;
 
   return (
     <div className="page">
@@ -45,8 +56,14 @@ export default function StoreProfilePage() {
         <a className="btn whatsapp" href={wa} target="_blank" rel="noreferrer"><MessageCircle size={18} /> Contactar por WhatsApp</a>
         <Link className="btn outline" to="/ruta-local"><MapPin size={18} /> Ver ubicacion</Link>
         <button className="btn secondary" onClick={() => document.getElementById("catalogo")?.scrollIntoView()}>{business.type === "experiencia" ? "Reservar" : "Hacer pedido"}</button>
-        <button className="btn primary" onClick={() => alert("Primero confirma un pedido para generar folio y solicitud.")}><ReceiptText size={18} /> Solicitar comprobante/factura</button>
-      </div>
+{isAuthenticated && (
+  <button
+    className="btn primary"
+    onClick={() => alert("Primero confirma un pedido para generar folio y solicitud.")}
+  >
+    <ReceiptText size={18} /> Solicitar comprobante/factura
+  </button>
+)}      </div>
 
       <section className="section store-layout">
         <div>
