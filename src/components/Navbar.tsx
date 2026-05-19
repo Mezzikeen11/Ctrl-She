@@ -1,5 +1,5 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { LogOut, Menu, Sparkles } from "lucide-react";
+import { LogOut, Menu } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../auth/AuthContext";
 
@@ -17,7 +17,7 @@ export default function Navbar() {
   return (
     <header className="navbar">
       <Link className="brand" to="/">
-        <span className="brand-mark"><Sparkles size={18} /></span>
+        <span className="brand-mark"><img src="/logo.png" alt="Ctrl + She" /></span>
         Ctrl + She
       </Link>
       <button className="icon-button mobile-only" onClick={() => setOpen(!open)} aria-label="Abrir menu">

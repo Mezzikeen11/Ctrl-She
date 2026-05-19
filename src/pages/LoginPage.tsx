@@ -1,6 +1,5 @@
 import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Sparkles } from "lucide-react";
 import { useAuth } from "../auth/AuthContext";
 import type { UserRole } from "../auth/AuthContext";
 
@@ -34,16 +33,16 @@ export default function LoginPage() {
     <div className="page login-page">
       <section className="login-card card">
         <div className="login-brand">
-          <span className="brand-mark"><Sparkles size={20} /></span>
+          <span className="login-logo-mark"><img src="/logo.png" alt="Ctrl + She" /></span>
           <h1>Ctrl + She</h1>
-          <p>{mode === "login" ? "Inicia sesion para continuar" : "Crea tu cuenta en un paso"}</p>
+          <p>{mode === "login" ? "Inicia sesion para continuar" : "Crea tu cuenta"}</p>
         </div>
         <div className="auth-tabs" aria-label="Seleccionar acceso">
           <button className={mode === "login" ? "chip active" : "chip"} onClick={() => setMode("login")}>Iniciar sesion</button>
           <button className={mode === "register" ? "chip active" : "chip"} onClick={() => setMode("register")}>Registrarte</button>
         </div>
         <form className="form" onSubmit={submit}>
-          <label htmlFor="email">Correo<input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="correo@ctrlshe.demo" /></label>
+          <label htmlFor="email">Correo<input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="correo@ctrlshe.com" /></label>
           <label htmlFor="password">Contrasena<input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Ctrl+She" /></label>
           {mode === "register" && (
             <fieldset className="role-field">
