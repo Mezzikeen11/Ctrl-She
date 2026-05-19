@@ -37,8 +37,10 @@ export default function ProductCard({ item, onSelect }: { item: CatalogItem; onS
           {item.meetingPoint && <span><MapPin size={15} /> {item.meetingPoint}</span>}
         </div>
 <button className="btn primary full" onClick={() => onSelect(item)}>
+  {item.type === "producto" ? <Package size={18} /> : <CalendarCheck size={18} />}
   {action}
-</button>      </div>
+</button>     
+</div>
     </article>
   );
 }

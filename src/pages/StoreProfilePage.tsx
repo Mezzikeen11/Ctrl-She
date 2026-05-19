@@ -1,8 +1,7 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { MessageCircle, MapPin, ReceiptText, Star } from "lucide-react";
 import { useState } from "react";
+import { CalendarCheck, MessageCircle, MapPin, Share2, ShoppingBag, Star } from "lucide-react";
 import ProductCard from "../components/ProductCard";
-import QRBlock from "../components/QRBlock";
 import ReviewCard from "../components/ReviewCard";
 import ConfirmationPanel from "../components/ConfirmationPanel";
 import { addReview, getBusinesses } from "../lib/storage";
@@ -55,6 +54,19 @@ export default function StoreProfilePage() {
   )}`;
 
   const url = `${window.location.origin}/tienda/${business.id}`;
+
+const shareStore = async () => {
+  if (navigator.share) {
+    await navigator.share({
+      title: business.name,
+      text: `Mira esta tienda en Ctrl + She: ${business.name}`,
+      url
+    });
+  } else {
+    await navigator.clipboard.writeText(url);
+    alert("Enlace de la tienda copiado al portapapeles.");
+  }
+};
 
   const saveReview = () => {
     setReviewError("");
@@ -137,55 +149,60 @@ export default function StoreProfilePage() {
       </section>
 
       <div className="action-strip">
-        <a
-          className="btn whatsapp"
-          href={wa}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <MessageCircle size={18} /> Contactar por WhatsApp
-        </a>
+  <a
+    className="btn whatsapp"
+    href={wa}
+    target="_blank"
+    rel="noreferrer"
+  >
+    <MessageCircle size={18} /> Contactar por WhatsApp
+  </a>
 
-        <Link className="btn outline" to="/ruta-local">
-          <MapPin size={18} /> Ver ubicación
-        </Link>
+  <Link className="btn outline" to="/ruta-local">
+    <MapPin size={18} /> Ver ubicación
+  </Link>
 
-        <button
-          className="btn secondary"
-          onClick={() => document.getElementById("catalogo")?.scrollIntoView()}
-        >
-          {business.type === "experiencia" ? "Reservar" : "Hacer pedido"}
-        </button>
+  <button
+  className="btn secondary action-button"
+  onClick={() =>
+    document.getElementById("catalogo")?.scrollIntoView({
+      behavior: "smooth"
+    })
+  }
+>
+  {business.type === "experiencia" ? (
+    <>
+      <CalendarCheck size={18} />
+      Reservar experiencia
+    </>
+  ) : (
+    <>
+      <ShoppingBag size={18} />
+      Hacer pedido
+    </>
+  )}
+</button>
 
-        {isAuthenticated && (
-          <button
-            className="btn primary"
-            onClick={() =>
-              alert("Primero confirma un pedido para generar folio y comprobante.")
-            }
-          >
-            <ReceiptText size={18} /> Solicitar comprobante
-          </button>
-        )}
-      </div>
+  <button className="btn primary" onClick={shareStore}>
+  <Share2 size={18} /> Compartir
+</button>
+</div>
 
-      <section className="section store-layout">
-        <div>
-          <h2 id="catalogo">Catálogo</h2>
+      <section className="section">
+  <div>
+    <h2 id="catalogo">Catálogo</h2>
 
-          <div className="catalog-grid">
-            {business.items.map((item) => (
-              <ProductCard
-                key={item.id}
-                item={item}
-                onSelect={selectItem}
-              />
-            ))}
-          </div>
-        </div>
-
-        <QRBlock url={url} />
-      </section>
+    <div className="catalog-grid">
+      {business.items.map((item) => (
+        <ProductCard
+          key={item.id}
+          item={item}
+          onSelect={selectItem}
+        />
+      ))}
+    </div>
+  </div>
+</section>
 
       <section className="section review-area">
         <div className="review-area-header">

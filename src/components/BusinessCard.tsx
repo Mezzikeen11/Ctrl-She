@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { MapPin, Star } from "lucide-react";
+import { MapPin, Store, Star } from "lucide-react";
 import { useState } from "react";
 import type { Business } from "../types";
 
@@ -20,8 +20,9 @@ export default function BusinessCard({ business }: { business: Business }) {
         <div className="meta"><MapPin size={16} /> {business.zone}</div>
         <div className="row between">
           <span className="rating"><Star size={16} fill="currentColor" /> {business.rating}</span>
-          <Link className="btn primary small" to={`/tienda/${business.id}`}>Ver tienda</Link>
-        </div>
+<Link className="btn primary small" to={`/tienda/${business.id}`}>
+  <Store size={16} /> Ver tienda
+</Link>        </div>
       </div>
     </article>
   );
