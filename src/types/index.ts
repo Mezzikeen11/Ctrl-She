@@ -41,6 +41,7 @@ export interface Business {
   category: Category;
   type: BusinessType;
   zone: string;
+  hours?: string;
   phone: string;
   status: ValidationStatus;
   rating: number;
