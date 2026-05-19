@@ -1,13 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import {
-  MessageCircle,
-  MapPin,
-  ReceiptText,
-  Share2,
-  ShoppingBag,
-  CalendarDays,
-  Star,
-} from "lucide-react";
+import { MessageCircle, MapPin, ReceiptText, Star } from "lucide-react";
 import { useState } from "react";
 import ProductCard from "../components/ProductCard";
 import QRBlock from "../components/QRBlock";
@@ -16,17 +8,19 @@ import ConfirmationPanel from "../components/ConfirmationPanel";
 import { addReview, getBusinesses } from "../lib/storage";
 import type { CatalogItem, Review } from "../types";
 import { useAuth } from "../auth/AuthContext";
+import "../styles/reviews.css";
 
 export default function StoreProfilePage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, role } = useAuth();
 
   const reviewStorageKey = id ? `ctrl-she-reviewed-${id}` : "";
 
   const [business, setBusiness] = useState(
     getBusinesses().find((item) => item.id === id)
   );
+
   const [imageFailed, setImageFailed] = useState(false);
   const [reviewText, setReviewText] = useState("");
   const [reviewRating, setReviewRating] = useState(0);
@@ -45,6 +39,8 @@ export default function StoreProfilePage() {
     );
   }
 
+  const canReview = isAuthenticated && role === "cliente";
+
   const selectItem = (item: CatalogItem) => {
     if (!isAuthenticated) {
       navigate("/login");
@@ -62,6 +58,11 @@ export default function StoreProfilePage() {
 
   const saveReview = () => {
     setReviewError("");
+
+    if (!canReview) {
+      setReviewError("Inicia sesión como cliente para publicar una reseña.");
+      return;
+    }
 
     if (hasReviewed) {
       setReviewError("Ya registraste una reseña para esta tienda.");
@@ -186,8 +187,14 @@ export default function StoreProfilePage() {
         <QRBlock url={url} />
       </section>
 
-      <section className="section">
-        <h2>Reseñas</h2>
+      <section className="section review-area">
+        <div className="review-area-header">
+          <div>
+            <span className="eyebrow">Opiniones</span>
+            <h2>Reseñas de clientes</h2>
+            <p>Consulta experiencias reales de otras compradoras.</p>
+          </div>
+        </div>
 
         {reviewConfirmed && (
           <ConfirmationPanel
@@ -198,36 +205,56 @@ export default function StoreProfilePage() {
           />
         )}
 
-        <div className="reviews-grid">
+        <div className="review-list">
           {business.reviews.map((review) => (
             <ReviewCard key={review.id} review={review} />
           ))}
         </div>
 
-        <div className="review-form card">
-          <div>
-            <span className="eyebrow">Tu opinión</span>
-            <h3>Comparte tu experiencia</h3>
-            <p>Solo puedes registrar una reseña por tienda desde este navegador.</p>
+        {!canReview && (
+          <div className="review-disabled-panel">
+            <strong>Reseñas disponibles solo para clientes</strong>
+            <p>
+              Para publicar una reseña necesitas iniciar sesión como cliente.
+              Puedes seguir explorando la tienda como invitado, pero la opción de reseñar
+              permanecerá deshabilitada.
+            </p>
+
+            {!isAuthenticated && (
+              <Link className="btn primary" to="/login">
+                Iniciar sesión
+              </Link>
+            )}
           </div>
+        )}
 
-          {hasReviewed ? (
-            <div className="alert success">
-              Ya registraste una reseña para esta tienda.
+        {canReview && (
+          <div className="review-form-panel">
+            <div>
+              <span className="eyebrow">Tu opinión</span>
+              <h3>Comparte tu experiencia</h3>
+              <p>Solo puedes registrar una reseña por tienda desde este navegador.</p>
             </div>
-          ) : (
-            <>
-              <label className="review-label">Tu calificación</label>
 
-                <div className="star-picker">
+            {hasReviewed ? (
+              <div className="review-inline-alert success">
+                Ya registraste una reseña para esta tienda.
+              </div>
+            ) : (
+              <>
+                <label className="review-rating-label">
+                  Tu calificación
+                </label>
+
+                <div className="review-star-picker">
                   {[1, 2, 3, 4, 5].map((value) => (
                     <button
                       type="button"
                       key={value}
                       className={
                         value <= (hoverRating || reviewRating)
-                          ? "star-button active"
-                          : "star-button"
+                          ? "review-star-button is-active"
+                          : "review-star-button"
                       }
                       onClick={() => setReviewRating(value)}
                       onMouseEnter={() => setHoverRating(value)}
@@ -235,33 +262,36 @@ export default function StoreProfilePage() {
                       aria-label={`Seleccionar ${value} ${value === 1 ? "estrella" : "estrellas"}`}
                       title={`${value} ${value === 1 ? "estrella" : "estrellas"}`}
                     >
-                      <Star size={25} fill="currentColor" />
+                      <Star fill="currentColor" strokeWidth={2} />
                     </button>
                   ))}
                 </div>
 
-              <textarea
-                placeholder="Escribe tu reseña para esta tienda"
-                value={reviewText}
-                onChange={(event) => setReviewText(event.target.value)}
-              />
+                <textarea
+                  placeholder="Escribe tu reseña para esta tienda"
+                  value={reviewText}
+                  onChange={(event) => setReviewText(event.target.value)}
+                />
 
-              {reviewError && (
-                <div className="alert pending" role="alert">
-                  {reviewError}
+                {reviewError && (
+                  <div className="review-inline-alert warning" role="alert">
+                    {reviewError}
+                  </div>
+                )}
+
+                <div className="review-form-actions">
+                  <button
+                    className="btn primary"
+                    onClick={saveReview}
+                    disabled={!reviewText.trim() || reviewRating === 0}
+                  >
+                    Publicar reseña
+                  </button>
                 </div>
-              )}
-
-              <button
-                className="btn primary"
-                onClick={saveReview}
-                disabled={!reviewText.trim() || reviewRating === 0}
-              >
-                Publicar reseña
-              </button>
-            </>
-          )}
-        </div>
+              </>
+            )}
+          </div>
+        )}
       </section>
     </div>
   );
