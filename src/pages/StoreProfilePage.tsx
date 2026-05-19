@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import ProductCard from "../components/ProductCard";
+import QRBlock from "../components/QRBlock";
 import ReviewCard from "../components/ReviewCard";
 import ConfirmationPanel from "../components/ConfirmationPanel";
 import { addReview, getBusinesses } from "../lib/storage";

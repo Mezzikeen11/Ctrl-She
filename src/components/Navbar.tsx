@@ -49,10 +49,8 @@ export default function Navbar() {
     <header className="navbar">
       <Link className="brand" to={brandTarget} onClick={() => setOpen(false)}>
         <span className="brand-mark">
-          <Sparkles size={18} />
+          <img src="/logo.png" alt="Ctrl + She" />
         </span>
-      <Link className="brand" to="/">
-        <span className="brand-mark"><img src="/logo.png" alt="Ctrl + She" /></span>
         Ctrl + She
       </Link>
 
