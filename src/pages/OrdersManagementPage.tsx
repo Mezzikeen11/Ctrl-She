@@ -13,7 +13,7 @@ import {
   X
 } from "lucide-react";
 import ConfirmationPanel from "../components/ConfirmationPanel";
-import { getBusinesses, getInvoices, getOrders, money, updateOrderStatus } from "../lib/storage";
+import { getBusinesses, getOrders, money, updateOrderStatus } from "../lib/storage";
 import type { BusinessType, Order, OrderStatus } from "../types";
 import "../styles/seller-orders.css";
 
@@ -89,8 +89,6 @@ export default function OrdersManagementPage() {
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<OrderStatus | "Todos">("Todos");
   const [confirmation, setConfirmation] = useState<{ folio: string; status: OrderStatus } | null>(null);
-
-  const invoices = useMemo(() => getInvoices(), []);
 
   const sortedOrders = useMemo(() => {
     return [...orders].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
@@ -283,7 +281,6 @@ export default function OrdersManagementPage() {
           </div>
         ) : (
           filteredOrders.map((order) => {
-            const invoice = invoices.find((item) => item.folio === order.folio);
             const visual = getOrderVisual(order);
 
             return (
@@ -352,10 +349,6 @@ export default function OrdersManagementPage() {
                   </p>
                   <p>
                     <b>Zona:</b> {visual.zone}
-                  </p>
-                  <p>
-                    <b>Comprobante:</b>{" "}
-                    {order.needsReceipt ? invoice?.status || "Solicitado" : "No solicitado"}
                   </p>
                   <p className="seller-order-amount">
                     <b>Total:</b> {money(order.amount)}

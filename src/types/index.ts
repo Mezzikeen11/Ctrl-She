@@ -77,17 +77,3 @@ export interface Order {
   status: OrderStatus;
   createdAt: string;
 }
-
-export interface InvoiceRequest {
-  id: string;
-  folio: string;
-  businessId: string;
-  rfc: string;
-  legalName: string;
-  fiscalZip: string;
-  regime: string;
-  cfdiUse: string;
-  email: string;
-  amount: number;
-  status: "Pendiente" | "En revisión" | "Enviada" | "Rechazada por datos incorrectos";
-}

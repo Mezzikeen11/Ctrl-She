@@ -1,10 +1,9 @@
 import { businesses } from "../data/mockData";
-import type { Business, InvoiceRequest, Order, Review } from "../types";
+import type { Business, Order, Review } from "../types";
 
 const keys = {
   businesses: "ctrl-she-businesses",
-  orders: "ctrl-she-orders",
-  invoices: "ctrl-she-invoices"
+  orders: "ctrl-she-orders"
 };
 
 export function getBusinesses(): Business[] {
@@ -19,7 +18,6 @@ export function saveBusinesses(value: Business[]) {
 export function resetDemoData() {
   localStorage.removeItem(keys.businesses);
   localStorage.removeItem(keys.orders);
-  localStorage.removeItem(keys.invoices);
 }
 
 export function getOrders(): Order[] {
@@ -38,14 +36,6 @@ export function updateOrderStatus(folio: string, status: Order["status"]) {
   const updated = getOrders().map((order) => order.folio === folio ? { ...order, status } : order);
   saveOrders(updated);
   return updated;
-}
-
-export function getInvoices(): InvoiceRequest[] {
-  return JSON.parse(localStorage.getItem(keys.invoices) || "[]");
-}
-
-export function saveInvoice(invoice: InvoiceRequest) {
-  localStorage.setItem(keys.invoices, JSON.stringify([invoice, ...getInvoices()]));
 }
 
 export function addReview(businessId: string, review: Review) {

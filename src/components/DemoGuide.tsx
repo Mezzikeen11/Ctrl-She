@@ -8,7 +8,6 @@ const steps = [
   "Hacer pedido o reserva.",
   "Simular pago.",
   "Generar comprobante.",
-  "Solicitar factura.",
   "Dejar resena.",
   "Iniciar sesion como emprendedora.",
   "Entrar al panel de emprendedora.",

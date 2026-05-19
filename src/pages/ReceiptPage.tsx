@@ -1,21 +1,10 @@
 import { Link, useParams } from "react-router-dom";
-import { useState } from "react";
-import { BadgeCheck, FileText, Printer } from "lucide-react";
-import ConfirmationPanel from "../components/ConfirmationPanel";
-import { getOrders, money, saveInvoice } from "../lib/storage";
+import { BadgeCheck, Printer } from "lucide-react";
+import { getOrders, money } from "../lib/storage";
 
 export default function ReceiptPage() {
   const { folio } = useParams();
   const order = getOrders().find((entry) => entry.folio === folio);
-  const [sent, setSent] = useState(false);
-  const [form, setForm] = useState({
-    rfc: "",
-    legalName: "",
-    fiscalZip: "",
-    regime: "",
-    cfdiUse: "Gastos en general",
-    email: ""
-  });
 
   if (!order) {
     return (
@@ -24,18 +13,6 @@ export default function ReceiptPage() {
       </div>
     );
   }
-
-  const submit = () => {
-    saveInvoice({
-      id: crypto.randomUUID(),
-      folio: order.folio,
-      businessId: order.businessId,
-      amount: order.amount,
-      status: "Pendiente",
-      ...form
-    });
-    setSent(true);
-  };
 
   return (
     <div className="page narrow receipt-page">
@@ -86,69 +63,6 @@ export default function ReceiptPage() {
         </div>
       </article>
 
-      <section className="card form invoice-card">
-        <div className="form-block-title">
-          <span><FileText size={17} /></span>
-          <div>
-            <h2>Solicitud de factura</h2>
-            <p>Registra los datos fiscales para que el negocio revise y atienda la solicitud.</p>
-          </div>
-        </div>
-
-        <div className="form-grid">
-          <label>
-            RFC
-            <input value={form.rfc} onChange={(event) => setForm({ ...form, rfc: event.target.value.toUpperCase() })} />
-          </label>
-
-          <label>
-            Nombre o razón social
-            <input value={form.legalName} onChange={(event) => setForm({ ...form, legalName: event.target.value })} />
-          </label>
-
-          <label>
-            Código postal fiscal
-            <input value={form.fiscalZip} onChange={(event) => setForm({ ...form, fiscalZip: event.target.value })} />
-          </label>
-
-          <label>
-            Régimen fiscal
-            <input value={form.regime} onChange={(event) => setForm({ ...form, regime: event.target.value })} />
-          </label>
-
-          <label>
-            Uso de CFDI
-            <input value={form.cfdiUse} onChange={(event) => setForm({ ...form, cfdiUse: event.target.value })} />
-          </label>
-
-          <label>
-            Correo electrónico
-            <input value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} />
-          </label>
-        </div>
-
-        <p className="invoice-summary">
-          Monto: <b>{money(order.amount)}</b> · Folio de compra: <b>{order.folio}</b>
-        </p>
-
-        <button className="btn primary" onClick={submit}>Solicitar factura</button>
-
-        <div className="status-track invoice-status">
-          {["Pendiente", "En revisión", "Enviada", "Rechazada"].map((status, index) => (
-            <span className={sent && index === 0 ? "done" : ""} key={status}>{status}</span>
-          ))}
-        </div>
-
-        {sent && (
-          <ConfirmationPanel
-            title="Solicitud registrada"
-            message="Tu solicitud de factura fue enviada al negocio para revisión."
-            detailTo={`/comprobante/${order.folio}`}
-            detailLabel="Ver comprobante"
-            onBack={() => setSent(false)}
-          />
-        )}
-      </section>
     </div>
   );
 }

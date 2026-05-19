@@ -30,7 +30,7 @@ export default function LandingPage() {
         <article>
           <span className="eyebrow">Solucion</span>
           <h2>Una herramienta clara para operar</h2>
-          <p>Tienda publica, QR, pedidos, reservas, comprobantes, solicitudes de factura e IA comercial simulada en un flujo facil de explicar.</p>
+          <p>Tienda publica, QR, pedidos, reservas, comprobantes e IA comercial simulada en un flujo facil de explicar.</p>
         </article>
       </section>
 
