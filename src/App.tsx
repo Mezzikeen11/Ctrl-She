@@ -15,6 +15,7 @@ import MyOrdersPage from "./pages/MyOrdersPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import OrdersManagementPage from "./pages/OrdersManagementPage";
 import QRPage from "./pages/QRPage";
+import SellerCatalogPage from "./pages/SellerCatalogPage";
 
 export default function App() {
   return (
@@ -71,6 +72,14 @@ export default function App() {
             element={
               <ProtectedRoute roles={["emprendedora"]}>
                 <QRPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/catalogo"
+            element={
+              <ProtectedRoute roles={["emprendedora"]}>
+                <SellerCatalogPage />
               </ProtectedRoute>
             }
           />

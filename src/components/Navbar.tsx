@@ -17,13 +17,14 @@ export default function Navbar() {
         ["Ruta local", "/ruta-local"],
         ["Mis pedidos", "/mis-pedidos"]
       ]
-    : role === "emprendedora"
-      ? [
-          ["Mi tienda", "/emprendedora"],
-          ["Pedidos", "/pedidos"],
-          ["IA comercial", "/ia"],
-          ["QR", "/qr"]
-        ]
+          : role === "emprendedora"
+        ? [
+            ["Mi tienda", "/emprendedora"],
+            ["Catálogo", "/catalogo"],
+            ["Pedidos", "/pedidos"],
+            ["IA comercial", "/ia"],
+            ["QR", "/qr"]
+          ]
             : role === "admin"
         ? [
             ["Panel admin", "/admin"],

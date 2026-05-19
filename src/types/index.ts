@@ -77,3 +77,15 @@ export interface Order {
   status: OrderStatus;
   createdAt: string;
 }
+
+export type InvoiceRequest = {
+  id: string;
+  folio: string;
+  businessId: string;
+  customerName: string;
+  rfc: string;
+  email: string;
+  amount: number;
+  status: "Solicitada" | "En revisión" | "Emitida";
+  createdAt: string;
+};

@@ -1,9 +1,10 @@
 import { businesses } from "../data/mockData";
-import type { Business, Order, Review } from "../types";
+import type { Business, BusinessType, InvoiceRequest, Order, Review } from "../types";
 
 const keys = {
   businesses: "ctrl-she-businesses",
-  orders: "ctrl-she-orders"
+  orders: "ctrl-she-orders",
+  invoices: "ctrl-she-invoices"
 };
 
 export function getBusinesses(): Business[] {
@@ -18,6 +19,7 @@ export function saveBusinesses(value: Business[]) {
 export function resetDemoData() {
   localStorage.removeItem(keys.businesses);
   localStorage.removeItem(keys.orders);
+  localStorage.removeItem(keys.invoices);
 }
 
 export function getOrders(): Order[] {
@@ -53,4 +55,41 @@ export function money(value: number) {
 export function makeFolio() {
   const next = getOrders().length + 1;
   return `CTRL-2026-${String(next).padStart(4, "0")}`;
+}
+
+export function configureSellerDemoBusiness(type: BusinessType) {
+  const sellerBusinessId = "artesanias-lupita";
+
+  const sourceBusiness =
+    businesses.find((business) => business.type === type) || businesses[0];
+
+  const demoBusiness: Business = {
+    ...sourceBusiness,
+    id: sellerBusinessId,
+    status: "Verificada",
+    items: sourceBusiness.items
+      .filter((item) => item.type === type)
+      .map((item, index) => ({
+        ...item,
+        id: `demo-${type}-${index + 1}`,
+        businessId: sellerBusinessId,
+        type
+      })),
+    reviews: sourceBusiness.reviews.map((review, index) => ({
+      ...review,
+      id: `demo-review-${type}-${index + 1}`,
+      businessId: sellerBusinessId
+    }))
+  };
+
+  const remainingBusinesses = getBusinesses().filter(
+    (business) => business.id !== sellerBusinessId
+  );
+
+  saveBusinesses([demoBusiness, ...remainingBusinesses]);
+
+  localStorage.removeItem(keys.orders);
+  localStorage.removeItem(keys.invoices);
+
+  return demoBusiness;
 }
